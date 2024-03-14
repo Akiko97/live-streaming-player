@@ -1,16 +1,29 @@
 <script setup>
-import HLSPlayer from './HLSPlayer.vue'
-import RTMPPlayer from './RTMPPlayer.vue'
-defineProps({
-  type: String,
-  url: String,
+import { onMounted, onBeforeUnmount, ref } from 'vue'
+import Hls from 'hls.js'
+const url = '/api/live/test/test.m3u8?token=123'
+const videoElement = ref(null)
+let hls = null
+onMounted(() => {
+  if (Hls.isSupported()) {
+    hls = new Hls()
+    hls.loadSource(url)
+    hls.attachMedia(videoElement.value)
+  } else if (videoElement.value.canPlayType('application/vnd.apple.mpegurl')) {
+    videoElement.value.src = url
+  }
+})
+onBeforeUnmount(() => {
+  if (hls) {
+    hls.destroy()
+  }
 })
 </script>
 
 <template>
-  <HLSPlayer :url="url" v-if="type === 'HLS'"/>
-  <RTMPPlayer :url="url" v-else-if="type === 'RTMP'"/>
-  <p v-else>TYPE ERROR</p>
+  <div>
+    <video ref="videoElement" controls style="width: 100%;"></video>
+  </div>
 </template>
 
 <style scoped>

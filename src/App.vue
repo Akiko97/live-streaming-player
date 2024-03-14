@@ -2,25 +2,6 @@
 import StreamingPlayer from './components/StreamingPlayer.vue'
 import { ref } from 'vue'
 const watermark = ref(['LSS', '***.***.***.***'])
-const type = ref('RTMP')
-const url = ref('')
-const urls = ref([
-  {value: 'rtmp://'},
-  {value: 'http://'},
-])
-const querySearch = (queryString, cb) => {
-  const results = queryString
-      ? urls.value.filter(createFilter(queryString))
-      : urls.value
-  cb(results)
-}
-const createFilter = (queryString) => {
-  return (url) => {
-    return (
-        url.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
-    )
-  }
-}
 </script>
 
 <template>
@@ -35,17 +16,7 @@ const createFilter = (queryString) => {
         </div>
       </el-header>
       <el-main>
-        <el-radio-group v-model="type" class="ml-4">
-          <el-radio value="RTMP" size="large">RTMP</el-radio>
-          <el-radio value="HLS" size="large">HLS</el-radio>
-          <el-autocomplete
-              v-model="url"
-              :fetch-suggestions="querySearch"
-              clearable
-              placeholder="Please Input URL"
-          />
-        </el-radio-group>
-        <StreamingPlayer :type="type" :url="url"/>
+        <StreamingPlayer/>
       </el-main>
     </el-container>
   </el-watermark>
