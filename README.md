@@ -14,7 +14,7 @@ yarn build
 
 * Need proxy /api -> Streaming URL
 
-## XIU
+## [XIU](https://www.rustxiu.com/docs/getting-started/setup/)
 
 ```shell
 cd xiu
